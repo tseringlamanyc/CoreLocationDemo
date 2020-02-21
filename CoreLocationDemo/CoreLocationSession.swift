@@ -16,6 +16,8 @@ class CoreLocationSession: NSObject {
         locationManager = CLLocationManager()
         super.init()
         locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
     }
 }
 
@@ -43,5 +45,13 @@ extension CoreLocationSession: CLLocationManagerDelegate {
         default:
             print("default")
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("didEnterRegion")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("didExitRegion")
     }
 }
