@@ -39,8 +39,18 @@ class CoreLocationSession: NSObject {
         // change info.plist
         // NSLocationAlwaysAndWhenInUseUsageDescription , NSLocationWhenInUseUsageDescription
         
-        //getting updates for user location
-        locationManager.startUpdatingLocation()
+        // getting updates for user location
+        // locationManager.startUpdatingLocation()
+        
+        startSigLocationChange()
+        monitorRegion()
+    }
+    
+    private func startSigLocationChange() {
+        if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            return
+        }
+        locationManager.startMonitoringSignificantLocationChanges()
     }
     
     public func coordinateToPlacemark(coordinate: CLLocationCoordinate2D) {
@@ -70,7 +80,18 @@ class CoreLocationSession: NSObject {
                 }
             }
         }
+    
+    // setting up region : CLRegion (center coordinate and a radius in meters)
+    public func monitorRegion() {
+        let location = Location.getLocations()[2]
+        let identifier = "Monitoring Region"
+        let region = CLCircularRegion(center: location.coordinate, radius: 500, identifier: identifier)
+        region.notifyOnEntry = true
+        region.notifyOnExit = false
+        
+        locationManager.startMonitoring(for: region)
     }
+}
 
 
 extension CoreLocationSession: CLLocationManagerDelegate {

@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import MapKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var mapView: MKMapView!
     
     private let locationSession = CoreLocationSession()
     
@@ -16,6 +19,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         convertCoordinateToPlacemark()
         placeToCoordinate()
+        
+        // configure map view
+        mapView.showsUserLocation = true
+        
     }
     
     private func convertCoordinateToPlacemark() {
